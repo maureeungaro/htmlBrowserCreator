@@ -7,6 +7,7 @@
 // c++
 #include <string>
 #include <vector>
+#include <fstream>
 using namespace std;
 
 
@@ -23,18 +24,23 @@ public:
 class Page {
 	
 public:
-	Page(int argc, char *argv[]);
+	Page(GOptions* gopt);
 	
-	
+	// Page options
+	static map<string, GOption> defineOptions();
+
 private:
-	GOptions *gopts;
-	map<string, GOption> defineOptions();
-	
 
 	vector<HtmlVariable> rows;
-	vector<HtmlVariable> coumns;
+	vector<HtmlVariable> columns;
 	vector<HtmlVariable> selections;
-	
+
+	// html
+	ofstream hf;
+
+	void writeTopHtml();
+	void writeBottomHtml();
+
 };
 
 #endif

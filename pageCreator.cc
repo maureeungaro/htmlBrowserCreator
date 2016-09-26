@@ -10,10 +10,21 @@
 using namespace std;
 
 
+
+// load the Page option
+map<string, GOption> defineOptions()
+{
+	map<string, GOption> optionsMap;
+	optionsMap += Page::defineOptions();
+	return optionsMap;
+}
+
+
 //! example of main declaring GOptions
 int main(int argc, char* argv[])
 {
+	GOptions *gopts = new GOptions(argc, argv, defineOptions(), 1);
 
-	Page page(argc, argv);
+	Page page(gopts);
 }
 
