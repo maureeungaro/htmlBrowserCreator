@@ -181,7 +181,7 @@ void Page::writeBody()
 	hf << "\t\t <center>" << endl;
 	
 	// title
-	hf << "\t\t\t <h2> " << pageTitle << " </h2>" << endl;
+	if(pageTitle != "Mauri") hf << "\t\t\t <h2> " << pageTitle << " </h2>" << endl;
 
 
 	// table. Left: data tables. Right: plot
