@@ -40,6 +40,7 @@ class Page {
 
 	int tdGrouping;
 	string pageTitle;
+	string defaultPlot;
 
 	// html
 	ofstream hf;
@@ -50,6 +51,8 @@ class Page {
 
 	void writeGroupedTDs();
 	void writeSingleTDs();
+
+	void writeSelectables();
 
 };
 

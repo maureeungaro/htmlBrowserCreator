@@ -46,9 +46,9 @@ HtmlVariable::HtmlVariable(string tit, string filename)
 map<string, GOption> Page::defineOptions()
 {
 	map<string, GOption> optionsMap;
-	optionsMap["addRowTableVariable"]    = GOption("Row Variable Description",     "mauri",          "html", true);
-	optionsMap["addColumnTableVariable"] = GOption("Column Variable Description",  "mauri",          "html", true);
-	optionsMap["addSelectableVariable"]  = GOption("QuantityVariable Description", "mauri",          "html", true);
+	optionsMap["addRowTableVariable"]    = GOption("Row Variable Description",     "mauri",          "html");
+	optionsMap["addColumnTableVariable"] = GOption("Column Variable Description",  "mauri",          "html");
+	optionsMap["addSelectableVariable"]  = GOption("QuantityVariable Description", "mauri",          "html", true);  // can be repeated
 	optionsMap["f"]                      = GOption("Filename",                     "imageslist.txt");
 	optionsMap["imagesSize"]             = GOption("(w, h) image size",            "1000 800");
 	optionsMap["defaultPlot"]            = GOption("Default Plot at page loading", "default.png");
@@ -70,8 +70,9 @@ Page::Page(GOptions* gopt)
 	for(auto &tv: gopt->getStrings("addSelectableVariable")) {
 		selections.push_back(HtmlVariable(tv, filename));
 	}
-	tdGrouping = gopt->getInt("tdGrouping");
-	pageTitle = gopt->getString("pageTitle");
+	tdGrouping  = gopt->getInt("tdGrouping");
+	pageTitle   = gopt->getString("pageTitle");
+	defaultPlot =  gopt->getString("defaultPlot");
 
 	hf.open("page.html");
 	writeTopHtml();
@@ -87,7 +88,7 @@ void Page::writeTopHtml()
 {
 	hf << "<html>" << endl;
 	hf << "\t <head>" << endl;
-	// css style
+	// css style: table
 	hf << "\t\t <style type=\"text/css\">" << endl;
 	hf << "\t\t\t #indextable { " << endl;
 	hf << "\t\t\t\t font-family: \"Trebuchet MS\", Arial, Helvetica, sans-serif; " << endl;
@@ -95,11 +96,31 @@ void Page::writeTopHtml()
 	hf << "\t\t\t } " << endl;
 	hf << "\t\t\t #indextable td { " << endl;
 	hf << "\t\t\t\t border: 1px solid #ddd; " << endl;
-	hf << "\t\t\t\t padding: 8px; " << endl;
+	hf << "\t\t\t\t padding: 6px; " << endl;
 	hf << "\t\t\t } " << endl;
 	hf << "\t\t\t #indextable tr:nth-child(even){background-color: #f2f2f2;} " << endl;
 	hf << "\t\t\t #indextable tr:hover {background-color: #ddd;}" << endl;
-	hf << "\t\t\t #indextable td:hover {background-color: #d55;}" << endl;
+	hf << "\t\t\t #indextable td:hover {background-color: #119; color: white;}" << endl;
+	// css style: button
+	hf << "\t\t\t .button { " << endl;
+	hf << "\t\t\t background-color: white; " << endl;
+	hf << "\t\t\t color: black; " << endl;
+	hf << "\t\t\t border: 2px solid #555555; " << endl;
+	hf << "\t\t\t border-radius: 10%; " << endl;
+	hf << "\t\t\t padding: 16px 32px; " << endl;
+	hf << "\t\t\t text-align: center; " << endl;
+	hf << "\t\t\t text-decoration: none; " << endl;
+	hf << "\t\t\t display: inline-block; " << endl;
+	hf << "\t\t\t font-size: 16px; " << endl;
+	hf << "\t\t\t margin: 4px 2px; " << endl;
+	hf << "\t\t\t -webkit-transition-duration: 0.2s; " << endl;
+	hf << "\t\t\t transition-duration: 0.4s; " << endl;
+	hf << "\t\t\t cursor: pointer; " << endl;
+	hf << "\t\t\t } " << endl;
+	hf << "\t\t\t .button:hover { " << endl;
+	hf << "\t\t\t background-color: #555555; " << endl;
+	hf << "\t\t\t color: white; " << endl;
+	hf << "\t\t\t } " << endl;
 
 	hf << "\t\t </style>" << endl;
 	// script
@@ -117,14 +138,26 @@ void Page::writeTopHtml()
 	// changeBin function
 	hf << "\t\t\t function showPic(row, col)" << endl;
 	hf << "\t\t\t {" << endl;
+
+	// row
 	hf << "\t\t\t    var dist = \"img/\"" << endl;
 	hf << "\t\t\t    dist += \"" << rows[0].title << "-\"" << endl;
-	hf << "\t\t\t    dist += row"  << endl;
+	hf << "\t\t\t    dist += row;"  << endl;
+
+	// column if necessary
 	if(tdGrouping == 0) {
 		hf << "\t\t\t    dist += \"_\"" << endl;
 		hf << "\t\t\t    dist += \"" << columns[0].title << "-\"" << endl;
-		hf << "\t\t\t    dist += col" << endl;
+		hf << "\t\t\t    dist += col;" << endl;
 	}
+
+	// selectables
+	for(auto &sv: selections) {
+		hf << "\t\t\t    dist += \"_" << sv.title << "-\";" << endl;
+		hf << "\t\t\t    dist += "    << sv.title << ";" << endl;
+	}
+
+	// format
 	hf << "\t\t\t    dist += \".png\"" << endl;
 	hf << "\t\t\t    document.DIST.src = dist" << endl;
 	hf << "\t\t\t }" << endl;
@@ -143,11 +176,15 @@ void Page::writeBody()
 	// title
 	hf << "\t\t\t <h2> " << pageTitle << " </h2>" << endl;
 
-	// table. Left: choices tables. Right: plot
-	hf << "\t\t\t <table> " << endl;
-	hf << "\t\t\t\t <tr> " << endl;
 
-	// Left: choices tables
+	// table. Left: data tables. Right: plot
+	hf << "\t\t\t <table cellpadding=10> " << endl;
+
+	// selectables quantities
+	writeSelectables();
+
+	hf << "\t\t\t\t <tr> " << endl;
+	// Left: data tables
 	hf << "\t\t\t\t\t <td> " << endl;
 	hf << "\t\t\t\t\t\t <table id=\"indextable\" class=\"indextable\"> " << endl;
 
@@ -162,14 +199,11 @@ void Page::writeBody()
 	hf << "\t\t\t\t\t </td> " << endl;
 
 
-
 	// Right: plot
 	hf << "\t\t\t\t\t <td> " << endl;
-	hf << "\t\t\t\t\t\t <img name = \"DIST\" width=\"650px\" /> " << endl;
+	hf << "\t\t\t\t\t\t <img name = \"DIST\" width=\"650px\" src=\"" << defaultPlot << "\"/> " << endl;
 	hf << "\t\t\t\t\t </td> " << endl;
 
-	
-	
 	
 	hf << "\t\t\t\t </tr> " << endl;
 	hf << "\t\t\t </table> " << endl;
@@ -217,6 +251,30 @@ void Page::writeSingleTDs()
 
 }
 
+
+void Page::writeSelectables()
+{
+	for(auto &sv: selections) {
+		// selectable quantities - onlt left TD
+		hf << "\t\t\t\t <tr> " << endl;
+		hf << "\t\t\t\t\t <td> " << endl;
+
+		hf << "\t\t\t\t\t\t <table> <tr>" << endl;
+		for(auto &ps: sv.present) {
+			hf << "\t\t\t\t\t\t\t <td><button class=\"button\" onclick=\"javascript:" << sv.title << "=\'" << ps << "\' \" >" << ps <<"</button></td>" << endl;
+
+		}
+		hf << "\t\t\t\t\t\t </tr></table>" << endl;
+
+		hf << "\t\t\t\t\t </td> " << endl;
+
+		hf << "\t\t\t\t\t <td></td> " << endl;
+
+		hf << "\t\t\t\t </tr> " << endl;
+	}
+
+
+}
 
 
 
