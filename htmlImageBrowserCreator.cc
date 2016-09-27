@@ -73,6 +73,13 @@ Page::Page(GOptions* gopt)
 	tdGrouping  = gopt->getInt("tdGrouping");
 	pageTitle   = gopt->getString("pageTitle");
 	defaultPlot =  gopt->getString("defaultPlot");
+	vector<string> ress = gopt->getStringVector("imagesSize");
+	if(ress.size() == 2) {
+		// not sure why I have to add 50. 
+		xres = stod(ress[0]) + 50;
+		yres = stod(ress[1]) + 50;
+	}
+
 
 	hf.open("page.html");
 	writeTopHtml();
@@ -128,7 +135,7 @@ void Page::writeTopHtml()
 	
 	// showPic function
 	hf << "\t\t\t function popPic() {picDisplayed = window.open(document.DIST.src, document.DIST.src,";
-	hf << "'statusbar=no, scrollbars=auto, status=no, resizable=no, width=1000, height=800');}" << endl;
+	hf << "'statusbar=no, scrollbars=auto, status=no, resizable=no, width=" << xres << ", height=" << yres << "');}" << endl;
 	
 	// selectable variables
 	for(auto &sv: selections) {
@@ -265,9 +272,9 @@ void Page::writeSelectables()
 
 		}
 		hf << "\t\t\t\t\t\t </tr></table>" << endl;
-
 		hf << "\t\t\t\t\t </td> " << endl;
 
+		// right TD is empty
 		hf << "\t\t\t\t\t <td></td> " << endl;
 
 		hf << "\t\t\t\t </tr> " << endl;

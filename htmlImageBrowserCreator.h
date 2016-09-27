@@ -42,6 +42,8 @@ class Page {
 	string pageTitle;
 	string defaultPlot;
 
+	int xres, yres;
+
 	// html
 	ofstream hf;
 
