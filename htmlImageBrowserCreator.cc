@@ -72,14 +72,13 @@ Page::Page(GOptions* gopt)
 	}
 	tdGrouping  = gopt->getInt("tdGrouping");
 	pageTitle   = gopt->getString("pageTitle");
-	defaultPlot =  gopt->getString("defaultPlot");
+	defaultPlot = gopt->getString("defaultPlot");
 	vector<string> ress = gopt->getStringVector("imagesSize");
 	if(ress.size() == 2) {
 		// not sure why I have to add 50. 
 		xres = stod(ress[0]) + 50;
 		yres = stod(ress[1]) + 50;
 	}
-
 
 	hf.open("page.html");
 	writeTopHtml();
@@ -230,7 +229,6 @@ void Page::writeGroupedTDs()
 
 	for(auto &ri: rows[0].present) {
 
-
 		if(gIndex == 0) hf << "\t\t\t\t\t\t\t <tr> " << endl;
 
 		hf << "\t\t\t\t\t\t\t\t <td onclick=\"popPic()\" onmouseover=\"showPic('" << ri << "', 'na')\" >" << ri << "</td>" << endl;
@@ -241,7 +239,6 @@ void Page::writeGroupedTDs()
 			hf << "\t\t\t\t\t\t\t </tr> " << endl;
 			gIndex = 0;
 		}
-
 	}
 }
 
@@ -255,6 +252,21 @@ void Page::writeSingleTDs()
 		hf << "\t\t\t\t\t\t\t\t <td>" <<  ct << "</td>" << endl;
 	}
 	hf << "\t\t\t\t\t\t\t </tr> " << endl;
+
+	// all remaining rows: row content
+	for(auto &ri: rows[0].present) {
+		hf << "\t\t\t\t\t\t\t <tr> " << endl;
+
+		hf << "\t\t\t\t\t\t\t\t <td>" << ri << "</td>" << endl;
+
+		for(auto &ct : columns[0].present) {
+			hf << "\t\t\t\t\t\t\t\t <td onclick=\"popPic()\" onmouseover=\"showPic('" << ri << "', '" << ct << "')\" />"  << endl;
+		}
+
+
+
+		hf << "\t\t\t\t\t\t\t </tr> " << endl;
+	}
 
 }
 
@@ -279,8 +291,6 @@ void Page::writeSelectables()
 
 		hf << "\t\t\t\t </tr> " << endl;
 	}
-
-
 }
 
 
