@@ -174,6 +174,18 @@ void Page::writeTopHtml()
 	hf << "\t\t\t    document.DIST.src = dist" << endl;
 	hf << "\t\t\t }" << endl;
 
+	// for each selectables create the function that change the title
+	for(auto &sv: selections) {
+		string functionTitle = "change" + sv.title;
+		string btitle        = sv.title + "Buttons";
+		string ctitle        = sv.title + "Title";
+		hf << "\t\t\t function " << functionTitle << "()" << endl;
+		hf << "\t\t\t {" << endl;
+		hf << "\t\t\t\t var " << ctitle << " = \"" << sv.title << " \" ;" << endl;
+		hf << "\t\t\t\t " << ctitle << " += " << sv.title << ";" << endl;
+		hf << "\t\t\t\t document.getElementById(\"" << btitle << "\").innerHTML = " << ctitle << ";" << endl;
+		hf << "\t\t\t }" << endl;
+	}
 
 	hf << "\t\t </script>" << endl;
 	hf << "\t </head>" << endl;
@@ -285,8 +297,14 @@ void Page::writeSelectables()
 		hf << "\t\t\t\t\t <td> " << endl;
 
 		hf << "\t\t\t\t\t\t <table> <tr>" << endl;
+		string functionTitle = "change" + sv.title;
+		string btitle        = sv.title + "Buttons";
+
+		hf << "\t\t\t\t\t\t\t <td id=\"" << btitle << "\" align=center colspan=" << sv.present.size() << ">" << sv.title << " " << sv.present[0] << "</td></tr><tr>" << endl;
+
 		for(auto &ps: sv.present) {
-			hf << "\t\t\t\t\t\t\t <td><button class=\"button\" onclick=\"javascript:" << sv.title << "=\'" << ps << "\' \" >" << ps <<"</button></td>" << endl;
+			hf << "\t\t\t\t\t\t\t <td><button class=\"button\" onclick=\"javascript:" ;
+			hf << sv.title << "=\'" << ps << "\' ; " << functionTitle << "(); \">" << ps <<"</button></td>" << endl;
 
 		}
 		hf << "\t\t\t\t\t\t </tr></table>" << endl;

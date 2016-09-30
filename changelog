@@ -1,5 +1,7 @@
 9/30/16
-- added img directory options
+- added img directory option -d
+- added selectables buttons title
+- added function to change buttons title based on button pressed
 
 9/27/16
 - resolution option used
