@@ -41,6 +41,7 @@ class Page {
 	int tdGrouping;
 	string pageTitle;
 	string defaultPlot;
+	string imgDir;
 
 	int xres, yres;
 

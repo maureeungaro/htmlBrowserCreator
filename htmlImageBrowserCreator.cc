@@ -50,6 +50,7 @@ map<string, GOption> Page::defineOptions()
 	optionsMap["addColumnTableVariable"] = GOption("Column Variable Description",  "mauri");
 	optionsMap["addSelectableVariable"]  = GOption("QuantityVariable Description", "mauri",  "general", true);  // can be repeated
 	optionsMap["f"]                      = GOption("Filename",                     "imageslist.txt");
+	optionsMap["d"]                      = GOption("Image Directory",              "img");
 	optionsMap["imagesSize"]             = GOption("(w, h) image size",            "1000 800");
 	optionsMap["defaultPlot"]            = GOption("Default Plot at page loading", "default.png");
 	optionsMap["pageTitle"]              = GOption("Page Title",                   "Mauri");
@@ -76,6 +77,8 @@ Page::Page(GOptions* gopt)
 	tdGrouping  = gopt->getInt("tdGrouping");
 	pageTitle   = gopt->getString("pageTitle");
 	defaultPlot = gopt->getString("defaultPlot");
+	imgDir      = gopt->getString("d");
+
 	vector<string> ress = gopt->getStringVector("imagesSize");
 	if(ress.size() == 2) {
 		// not sure why I have to add 50. 
@@ -149,7 +152,7 @@ void Page::writeTopHtml()
 	hf << "\t\t\t {" << endl;
 
 	// row
-	hf << "\t\t\t    var dist = \"img/\"" << endl;
+	hf << "\t\t\t    var dist = \"" << imgDir << "/\"" << endl;
 	hf << "\t\t\t    dist += \"" << rows[0].title << "-\"" << endl;
 	hf << "\t\t\t    dist += row;"  << endl;
 
