@@ -10,7 +10,7 @@ HtmlVariable::HtmlVariable(string tit, string filename)
 	if(!in) {
 		cerr << " !! Error: can't open input file " << filename << ". Check your spelling. Exiting. " << endl;
 		exit(1);
-	} else {
+	} else if(tit != "mauri") {
 		cout << " > Scanning file " << filename << " for variable >" << tit << "<" << endl;
 		while (!in.eof()) {
 			string imageName;
@@ -46,9 +46,9 @@ HtmlVariable::HtmlVariable(string tit, string filename)
 map<string, GOption> Page::defineOptions()
 {
 	map<string, GOption> optionsMap;
-	optionsMap["addRowTableVariable"]    = GOption("Row Variable Description",     "mauri",          "html");
-	optionsMap["addColumnTableVariable"] = GOption("Column Variable Description",  "mauri",          "html");
-	optionsMap["addSelectableVariable"]  = GOption("QuantityVariable Description", "mauri",          "html", true);  // can be repeated
+	optionsMap["addRowTableVariable"]    = GOption("Row Variable Description",     "mauri");
+	optionsMap["addColumnTableVariable"] = GOption("Column Variable Description",  "mauri");
+	optionsMap["addSelectableVariable"]  = GOption("QuantityVariable Description", "mauri",  "general", true);  // can be repeated
 	optionsMap["f"]                      = GOption("Filename",                     "imageslist.txt");
 	optionsMap["imagesSize"]             = GOption("(w, h) image size",            "1000 800");
 	optionsMap["defaultPlot"]            = GOption("Default Plot at page loading", "default.png");
@@ -62,13 +62,16 @@ Page::Page(GOptions* gopt)
 	string filename = gopt->getString("f");
 
 	for(auto &tv: gopt->getStrings("addRowTableVariable")) {
-		rows.push_back(HtmlVariable(tv, filename));
+		if(tv != "mauri")
+			rows.push_back(HtmlVariable(tv, filename));
 	}
 	for(auto &tv: gopt->getStrings("addColumnTableVariable")) {
-		columns.push_back(HtmlVariable(tv, filename));
+		if(tv != "mauri")
+			columns.push_back(HtmlVariable(tv, filename));
 	}
 	for(auto &tv: gopt->getStrings("addSelectableVariable")) {
-		selections.push_back(HtmlVariable(tv, filename));
+		if(tv != "mauri")
+			selections.push_back(HtmlVariable(tv, filename));
 	}
 	tdGrouping  = gopt->getInt("tdGrouping");
 	pageTitle   = gopt->getString("pageTitle");
