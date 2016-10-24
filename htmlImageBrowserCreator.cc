@@ -294,7 +294,9 @@ void Page::writeSelectables()
 	for(auto &sv: selections) {
 		// selectable quantities - onlt left TD
 		hf << "\t\t\t\t <tr> " << endl;
-		hf << "\t\t\t\t\t <td> " << endl;
+
+		// colspan 2 so buttons include the plot space too
+		hf << "\t\t\t\t\t <td colspan=2> " << endl;
 
 		hf << "\t\t\t\t\t\t <table> <tr>" << endl;
 		string functionTitle = "change" + sv.title;
@@ -309,9 +311,6 @@ void Page::writeSelectables()
 		}
 		hf << "\t\t\t\t\t\t </tr></table>" << endl;
 		hf << "\t\t\t\t\t </td> " << endl;
-
-		// right TD is empty
-		hf << "\t\t\t\t\t <td></td> " << endl;
 
 		hf << "\t\t\t\t </tr> " << endl;
 	}
