@@ -79,7 +79,7 @@ Page::Page(GOptions* gopt)
 	defaultPlot = gopt->getString("defaultPlot");
 	imgDir      = gopt->getString("d");
 
-	vector<string> ress = gopt->getStringVector("imagesSize");
+	vector<string> ress = gopt->getStringVectorValue("imagesSize");
 	if(ress.size() == 2) {
 		// not sure why I have to add 50. 
 		xres = stod(ress[0]) + 50;
