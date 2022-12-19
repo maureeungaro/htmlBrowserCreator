@@ -1,6 +1,8 @@
 from init_env import init_environment
 
 env = init_environment("qt5 mlibrary")
+env.Append(CXXFLAGS=['-std=c++14'])
+
 # manually appending this library so the example can be compiled
 # the environment will not load the library if it's not there
 env.Append(LIBS = 'htmlImageBrowserCreator')
@@ -12,4 +14,4 @@ env.Append(LIBPATH = 'lib')
 
 example = env.Program(source = "pageCreator.cc", target = "pageCreator")
 
-Depends(example,  lib);
+Depends(example,  lib)
