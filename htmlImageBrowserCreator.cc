@@ -98,10 +98,10 @@ Page::Page(GOptions* gopt)
 
 void Page::writeTopHtml()
 {
-	hf << "<html>" << endl;
+	hf << "<html lang=\"en\">" << endl;
 	hf << "\t <head>" << endl;
 	// css style: table
-	hf << "\t\t <style type=\"text/css\">" << endl;
+	hf << "\t\t <style>" << endl;
 	hf << "\t\t\t #indextable { " << endl;
 	hf << "\t\t\t\t font-family: \"Trebuchet MS\", Arial, Helvetica, sans-serif; " << endl;
 	hf << "\t\t\t\t border-collapse: collapse; " << endl;
@@ -113,29 +113,48 @@ void Page::writeTopHtml()
 	hf << "\t\t\t #indextable tr:nth-child(even){background-color: #f2f2f2;} " << endl;
 	hf << "\t\t\t #indextable tr:hover {background-color: #ddd;}" << endl;
 	hf << "\t\t\t #indextable td:hover {background-color: #119; color: white;}" << endl;
-	// css style: button
 	hf << "\t\t\t .button { " << endl;
-	hf << "\t\t\t background-color: white; " << endl;
-	hf << "\t\t\t color: black; " << endl;
-	hf << "\t\t\t border: 2px solid #555555; " << endl;
-	hf << "\t\t\t border-radius: 10%; " << endl;
-	hf << "\t\t\t padding: 16px 32px; " << endl;
-	hf << "\t\t\t text-align: center; " << endl;
-	hf << "\t\t\t text-decoration: none; " << endl;
-	hf << "\t\t\t display: inline-block; " << endl;
-	hf << "\t\t\t font-size: 16px; " << endl;
-	hf << "\t\t\t margin: 4px 2px; " << endl;
-	hf << "\t\t\t -webkit-transition-duration: 0.2s; " << endl;
-	hf << "\t\t\t transition-duration: 0.4s; " << endl;
-	hf << "\t\t\t cursor: pointer; " << endl;
-	hf << "\t\t\t } " << endl;
-	hf << "\t\t\t .button:hover { " << endl;
-	hf << "\t\t\t background-color: #555555; " << endl;
-	hf << "\t\t\t color: white; " << endl;
-	hf << "\t\t\t } " << endl;
+    hf << "\t\t\t\t background-color: white;" << endl;
+    hf << "\t\t\t\t     color: black;" << endl;
+    hf << "\t\t\t\t     border: 2px solid #555555;" << endl;
+    hf << "\t\t\t\t     border-radius: 10%;" << endl;
+    hf << "\t\t\t\t     padding: 15px 32px;         /* Button size */" << endl;
+    hf << "\t\t\t\t     text-align: center;         /* Center text */" << endl;
+    hf << "\t\t\t\t     text-decoration: none;      /* No underline */" << endl;
+    hf << "\t\t\t\t     display: inline-block;      /* Inline block */" << endl;
+    hf << "\t\t\t\t     font-size: 16px;            /* Text size */" << endl;
+    hf << "\t\t\t\t     margin: 4px 2px;            /* Small margins */" << endl;
+    hf << "\t\t\t\t     cursor: pointer;            /* Pointer cursor */" << endl;
+    hf << "\t\t\t\t     transition: background-color 0.3s ease; /* Smooth background transition */" << endl;
+    hf << "\t\t\t}" << endl;
+    hf << "\t\t\t " << endl;
+
+    hf << "\t\t\t/* Hover effect */" << endl;
+    hf << "\t\t\tbutton:hover {" << endl;
+    hf << "\t\t\t\t background-color: #45a049; /* Darker green on hover */" << endl;
+    hf << "\t\t\t}" << endl;
+
+    hf << "\t\t\t/* Active state (when clicked) */" << endl;
+    hf << "\t\t\tbutton:active {" << endl;
+    hf << "\t\t\t\t transform: scale(0.98);    /* Slight shrink effect on click */" << endl;
+    hf << "\t\t\t}" << endl;
+
+    hf << "\t\t\t/* Selected (stay highlighted) */" << endl;
+    hf << "\t\t\tbutton.selected {" << endl;
+    hf << "\t\t\t\t background-color: #2e7031; /* Green when selected */" << endl;
+    hf << "\t\t\t\t color: white;               /* White text when selected */" << endl;
+    hf << "\t\t\t\t box-shadow: 0 5px #666;    /* Shadow for depth */" << endl;
+    hf << "\t\t\t}" << endl;
+
+    hf << "\t\t\t/* Optional: Focus state (when keyboard focused) */" << endl;
+    hf << "\t\t\tbutton:focus {" << endl;
+    hf << "\t\t\t\t outline: none;             /* Remove default focus outline */" << endl;
+    hf << "\t\t\t\t box-shadow: 0 0 10px #719ECE; /* Custom blue glow */" << endl;
+    hf << "\t\t\t}" << endl;
 
 	hf << "\t\t </style>" << endl;
-	// script
+    hf << "\t\t <title>Mauri's plots</title>" << endl;
+    // script
 	hf << "\t\t <script>" << endl;
 	
 	// showPic function
@@ -163,7 +182,7 @@ void Page::writeTopHtml()
 		hf << "\t\t\t    dist += col;" << endl;
 	}
 
-	// selectables
+	// selecteables
 	for(auto &sv: selections) {
 		hf << "\t\t\t    dist += \"_" << sv.title << "-\";" << endl;
 		hf << "\t\t\t    dist += "    << sv.title << ";" << endl;
@@ -179,12 +198,19 @@ void Page::writeTopHtml()
 		string functionTitle = "change" + sv.title;
 		string btitle        = sv.title + "Buttons";
 		string ctitle        = sv.title + "Title";
-		hf << "\t\t\t function " << functionTitle << "()" << endl;
+		hf << "\t\t\t function " << functionTitle << "(selectedButton)" << endl;
 		hf << "\t\t\t {" << endl;
-		hf << "\t\t\t\t var " << ctitle << " = \"" << sv.title << " \" ;" << endl;
-		hf << "\t\t\t\t " << ctitle << " += " << sv.title << ";" << endl;
+		hf << "\t\t\t\t var " << ctitle << " = \"" << sv.title << " \"  + " << sv.title << ";" << endl;
 		hf << "\t\t\t\t document.getElementById(\"" << btitle << "\").innerHTML = " << ctitle << ";" << endl;
-		hf << "\t\t\t }" << endl;
+
+        // Remove 'selected' class from all buttons in the weight row
+        hf << "\t\t\t\t var buttons = selectedButton.closest('tr').querySelectorAll('button');" << endl;
+        hf << "\t\t\t\t buttons.forEach(button => button.classList.remove(\"selected\"));" << endl;
+
+        // Add 'selected' class to the clicked button
+        hf << "\t\t\t\t selectedButton.classList.add(\"selected\");" << endl;
+        hf << "\t\t\t }" << endl;
+
 	}
 
 	hf << "\t\t </script>" << endl;
@@ -202,7 +228,7 @@ void Page::writeBody()
 
 
 	// table. Left: data tables. Right: plot
-	hf << "\t\t\t <table cellpadding=10> " << endl;
+	hf << "\t\t\t <table> " << endl;
 
 	// selectables quantities
 	writeSelectables();
@@ -306,8 +332,7 @@ void Page::writeSelectables()
 
 		for(auto &ps: sv.present) {
 			hf << "\t\t\t\t\t\t\t <td><button class=\"button\" onclick=\"javascript:" ;
-			hf << sv.title << "=\'" << ps << "\' ; " << functionTitle << "(); \">" << ps <<"</button></td>" << endl;
-
+			hf << sv.title << "=\'" << ps << "\' ; " << functionTitle << "(this); \">" << ps <<"</button></td>" << endl;
 		}
 		hf << "\t\t\t\t\t\t </tr></table>" << endl;
 		hf << "\t\t\t\t\t </td> " << endl;
@@ -315,48 +340,3 @@ void Page::writeSelectables()
 		hf << "\t\t\t\t </tr> " << endl;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
