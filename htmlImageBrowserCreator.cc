@@ -99,121 +99,127 @@ Page::Page(GOptions* gopt)
 void Page::writeTopHtml()
 {
 	hf << "<html lang=\"en\">" << endl;
-	hf << "\t <head>" << endl;
+	hf << "\t<head>" << endl;
 	// css style: table
-	hf << "\t\t <style>" << endl;
-	hf << "\t\t\t #indextable { " << endl;
-	hf << "\t\t\t\t font-family: \"Trebuchet MS\", Arial, Helvetica, sans-serif; " << endl;
-	hf << "\t\t\t\t border-collapse: collapse; " << endl;
-	hf << "\t\t\t } " << endl;
-	hf << "\t\t\t #indextable td { " << endl;
-	hf << "\t\t\t\t border: 1px solid #ddd; " << endl;
-	hf << "\t\t\t\t padding: 6px; " << endl;
-	hf << "\t\t\t } " << endl;
-	hf << "\t\t\t #indextable tr:nth-child(even){background-color: #f2f2f2;} " << endl;
-	hf << "\t\t\t #indextable tr:hover {background-color: #ddd;}" << endl;
-	hf << "\t\t\t #indextable td:hover {background-color: #119; color: white;}" << endl;
-	hf << "\t\t\t .button { " << endl;
-    hf << "\t\t\t\t background-color: white;" << endl;
-    hf << "\t\t\t\t     color: black;" << endl;
-    hf << "\t\t\t\t     border: 2px solid #555555;" << endl;
-    hf << "\t\t\t\t     border-radius: 10%;" << endl;
-    hf << "\t\t\t\t     padding: 15px 32px;         /* Button size */" << endl;
-    hf << "\t\t\t\t     text-align: center;         /* Center text */" << endl;
-    hf << "\t\t\t\t     text-decoration: none;      /* No underline */" << endl;
-    hf << "\t\t\t\t     display: inline-block;      /* Inline block */" << endl;
-    hf << "\t\t\t\t     font-size: 16px;            /* Text size */" << endl;
-    hf << "\t\t\t\t     margin: 4px 2px;            /* Small margins */" << endl;
-    hf << "\t\t\t\t     cursor: pointer;            /* Pointer cursor */" << endl;
-    hf << "\t\t\t\t     transition: background-color 0.3s ease; /* Smooth background transition */" << endl;
+	hf << "\t\t<style>" << endl;
+	hf << "\t\t\t#indextable { " << endl;
+	hf << "\t\t\t\tfont-family: \"Trebuchet MS\", Arial, Helvetica, sans-serif; " << endl;
+	hf << "\t\t\t\tborder-collapse: collapse; " << endl;
+	hf << "\t\t\t}" << endl;
+	hf << "\t\t\t#indextable td { " << endl;
+	hf << "\t\t\t\tborder: 1px solid #ddd; " << endl;
+	hf << "\t\t\t\tpadding: 6px; " << endl;
+	hf << "\t\t\t}" << endl;
+	hf << "\t\t\t#indextable tr:nth-child(even){background-color: #f2f2f2;} " << endl;
+	hf << "\t\t\t#indextable tr:hover {background-color: #ddd;}" << endl;
+	hf << "\t\t\t#indextable td:hover {background-color: #119; color: white;}" << endl;
+	hf << "\t\t\t.button { " << endl;
+    hf << "\t\t\t\t\tbackground-color: white;" << endl;
+    hf << "\t\t\t\t\tcolor: black;" << endl;
+    hf << "\t\t\t\t\tborder: 2px solid #555555;" << endl;
+    hf << "\t\t\t\t\tborder-radius: 10%;" << endl;
+    hf << "\t\t\t\t\tpadding: 15px 32px;         /* Button size */" << endl;
+    hf << "\t\t\t\t\ttext-align: center;         /* Center text */" << endl;
+    hf << "\t\t\t\t\ttext-decoration: none;      /* No underline */" << endl;
+    hf << "\t\t\t\t\tdisplay: inline-block;      /* Inline block */" << endl;
+    hf << "\t\t\t\t\tfont-size: 16px;            /* Text size */" << endl;
+    hf << "\t\t\t\t\tmargin: 4px 2px;            /* Small margins */" << endl;
+    hf << "\t\t\t\t\tcursor: pointer;            /* Pointer cursor */" << endl;
+    hf << "\t\t\t\t\ttransition: background-color 0.3s ease; /* Smooth background transition */" << endl;
     hf << "\t\t\t}" << endl;
     hf << "\t\t\t " << endl;
 
     hf << "\t\t\t/* Hover effect */" << endl;
     hf << "\t\t\tbutton:hover {" << endl;
-    hf << "\t\t\t\t background-color: #45a049; /* Darker green on hover */" << endl;
-    hf << "\t\t\t}" << endl;
+    hf << "\t\t\t\tbackground-color: #45a049; /* Darker green on hover */" << endl;
+    hf << "\t\t\t}"<< endl;
 
     hf << "\t\t\t/* Active state (when clicked) */" << endl;
     hf << "\t\t\tbutton:active {" << endl;
-    hf << "\t\t\t\t transform: scale(0.98);    /* Slight shrink effect on click */" << endl;
+    hf << "\t\t\t\ttransform: scale(0.98);    /* Slight shrink effect on click */" << endl;
     hf << "\t\t\t}" << endl;
 
     hf << "\t\t\t/* Selected (stay highlighted) */" << endl;
     hf << "\t\t\tbutton.selected {" << endl;
-    hf << "\t\t\t\t background-color: #2e7031; /* Green when selected */" << endl;
-    hf << "\t\t\t\t color: white;               /* White text when selected */" << endl;
-    hf << "\t\t\t\t box-shadow: 0 5px #666;    /* Shadow for depth */" << endl;
+    hf << "\t\t\t\tbackground-color: #323fd5; /* Green when selected */" << endl;
+    hf << "\t\t\t\tcolor: white;               /* White text when selected */" << endl;
+    hf << "\t\t\t\tbox-shadow: 0 5px #666;    /* Shadow for depth */" << endl;
     hf << "\t\t\t}" << endl;
 
     hf << "\t\t\t/* Optional: Focus state (when keyboard focused) */" << endl;
     hf << "\t\t\tbutton:focus {" << endl;
-    hf << "\t\t\t\t outline: none;             /* Remove default focus outline */" << endl;
-    hf << "\t\t\t\t box-shadow: 0 0 10px #719ECE; /* Custom blue glow */" << endl;
+    hf << "\t\t\t\toutline: none;             /* Remove default focus outline */" << endl;
+    hf << "\t\t\t\tbox-shadow: 0 0 10px #719ECE; /* Custom blue glow */" << endl;
     hf << "\t\t\t}" << endl;
 
-	hf << "\t\t </style>" << endl;
-    hf << "\t\t <title>Mauri's plots</title>" << endl;
+	hf << "\t\t</style>" << endl;
+    hf << "\t\t<title>Mauri's plots</title>" << endl;
     // script
-	hf << "\t\t <script>" << endl;
+	hf << "\t\t<script>" << endl;
 	
 	// showPic function
-	hf << "\t\t\t function popPic() {picDisplayed = window.open(document.DIST.src, document.DIST.src,";
+	hf << "\t\t\tfunction popPic() {picDisplayed = window.open(document.DIST.src, document.DIST.src,";
 	hf << "'statusbar=no, scrollbars=auto, status=no, resizable=no, width=" << xres << ", height=" << yres << "');}" << endl;
 	
 	// selectable variables
 	for(auto &sv: selections) {
-		hf << "\t\t\t var " << sv.title << " = \"" << sv.present[0] << "\";" << endl;
+		hf << "\t\t\tvar " << sv.title << " = \"" << sv.present[0] << "\";" << endl;
 	}
 	
 	// changeBin function
-	hf << "\t\t\t function showPic(row, col)" << endl;
-	hf << "\t\t\t {" << endl;
+	hf << "\t\t\tfunction showPic(row, col) {" << endl;
 
 	// row
-	hf << "\t\t\t    var dist = \"" << imgDir << "/\"" << endl;
-	hf << "\t\t\t    dist += \"" << rows[0].title << "-\"" << endl;
-	hf << "\t\t\t    dist += row;"  << endl;
+	hf << "\t\t\t\tvar dist = \"" << imgDir << "/\"" << endl;
+	hf << "\t\t\t\tdist += \"" << rows[0].title << "-\"" << endl;
+	hf << "\t\t\t\tdist += row;"  << endl;
 
 	// column if necessary
 	if(tdGrouping == 0) {
-		hf << "\t\t\t    dist += \"_\"" << endl;
-		hf << "\t\t\t    dist += \"" << columns[0].title << "-\"" << endl;
-		hf << "\t\t\t    dist += col;" << endl;
+		hf << "\t\t\t\tdist += \"_\"" << endl;
+		hf << "\t\t\t\tdist += \"" << columns[0].title << "-\"" << endl;
+		hf << "\t\t\t\tdist += col;" << endl;
 	}
 
 	// selecteables
 	for(auto &sv: selections) {
-		hf << "\t\t\t    dist += \"_" << sv.title << "-\";" << endl;
-		hf << "\t\t\t    dist += "    << sv.title << ";" << endl;
+		hf << "\t\t\t\tdist += \"_" << sv.title << "-\";" << endl;
+		hf << "\t\t\t\tdist += "    << sv.title << ";" << endl;
 	}
 
 	// format
-	hf << "\t\t\t    dist += \".png\"" << endl;
-	hf << "\t\t\t    document.DIST.src = dist" << endl;
-	hf << "\t\t\t }" << endl;
+	hf << "\t\t\t\tdist += \".png\"" << endl;
+	hf << "\t\t\t\tdocument.DIST.src = dist" << endl;
+	hf << "\t\t\t}" << endl;
 
 	// for each selectables create the function that change the title
 	for(auto &sv: selections) {
 		string functionTitle = "change" + sv.title;
 		string btitle        = sv.title + "Buttons";
 		string ctitle        = sv.title + "Title";
-		hf << "\t\t\t function " << functionTitle << "(selectedButton)" << endl;
-		hf << "\t\t\t {" << endl;
-		hf << "\t\t\t\t var " << ctitle << " = \"" << sv.title << " \"  + " << sv.title << ";" << endl;
-		hf << "\t\t\t\t document.getElementById(\"" << btitle << "\").innerHTML = " << ctitle << ";" << endl;
+		hf << "\t\t\tfunction " << functionTitle << "(selectedButton) {" << endl;
+		hf << "\t\t\t\tvar " << ctitle << " = \"" << sv.title << " \"  + " << sv.title << ";" << endl;
+		hf << "\t\t\t\tdocument.getElementById(\"" << btitle << "\").innerHTML = " << ctitle << ";" << endl;
 
         // Remove 'selected' class from all buttons in the weight row
-        hf << "\t\t\t\t var buttons = selectedButton.closest('tr').querySelectorAll('button');" << endl;
-        hf << "\t\t\t\t buttons.forEach(button => button.classList.remove(\"selected\"));" << endl;
+        hf << "\t\t\t\tvar buttons = selectedButton.closest('tr').querySelectorAll('button');" << endl;
+        hf << "\t\t\t\tbuttons.forEach(button => button.classList.remove(\"selected\"));" << endl;
 
         // Add 'selected' class to the clicked button
-        hf << "\t\t\t\t selectedButton.classList.add(\"selected\");" << endl;
-        hf << "\t\t\t }" << endl;
-
+        hf << "\t\t\t\tselectedButton.classList.add(\"selected\");" << endl;
+        hf << "\t\t\t}" << endl;
 	}
 
-	hf << "\t\t </script>" << endl;
+    hf << "\t\t\tfunction selectFirstButton() {" << endl;
+    hf << "\t\t\t\tvar buttons = document.querySelectorAll('button'); " << endl;
+    hf << "\t\t\t\tbuttons.forEach(button => {if (button.textContent == \"0\") button.click();}); " << endl;
+    hf << "\t\t\t}" << endl;
+
+    hf << "\t\t\twindow.onload = function() {" << endl;
+    hf << "\t\t\t\tselectFirstButton(); " << endl;
+    hf << "\t\t\t};" << endl;
+
+    hf << "\t\t </script>" << endl;
 	hf << "\t </head>" << endl;
 }
 
